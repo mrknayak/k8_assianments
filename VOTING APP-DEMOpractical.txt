@@ -1,0 +1,9 @@
+VOTING APP -DEMO practical
+
+9 Write your observations in a text file>>> All voting pod ,result pod and db pod invoked with other extension name.
+
+10. what happens after db pod deletion.>>> Result not captured after voting .
+
+12. Write in the text file, what you did in order to make the result pod work>>> Result pod worked after delete Result pod again.
+
+3. your comment on WHY result app STOPPED working after db pod stop >>> connection tear-down between old db pod and Result pod .  

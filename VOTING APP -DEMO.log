@@ -1,0 +1,144 @@
+[BEGIN] 4/28/2022 10:12:36 PM
+
+[ec2-user@ip-172-31-30-136 ~]$ 
+[ec2-user@ip-172-31-30-136 ~]$ 
+[ec2-user@ip-172-31-30-136 ~]$ cd /root/
+-bash: cd: /root/: Permission denied
+[ec2-user@ip-172-31-30-136 ~]$ sudo su
+[root@ip-172-31-30-136 ec2-user]# cd /root/
+[root@ip-172-31-30-136 ~]# git clone https://github.com/omrKalyan/example-voting-app
+fatal: destination path 'example-voting-app' already exists and is not an empty directory.
+[root@ip-172-31-30-136 ~]# 
+[root@ip-172-31-30-136 ~]# 
+[root@ip-172-31-30-136 ~]# 
+[root@ip-172-31-30-136 ~]# cd /root/example-voting-app/k8s-specifications
+[root@ip-172-31-30-136 k8s-specifications]# ll
+total 36
+-rw-r--r-- 1 root root 401 Apr 25 05:31 db-deployment.yaml
+-rw-r--r-- 1 root root 146 Apr 25 05:31 db-service.yaml
+-rw-r--r-- 1 root root 402 Apr 25 05:31 redis-deployment.yaml
+-rw-r--r-- 1 root root 152 Apr 25 05:31 redis-service.yaml
+-rw-r--r-- 1 root root 299 Apr 25 05:31 result-deployment.yaml
+-rw-r--r-- 1 root root 195 Apr 25 05:31 result-service.yaml
+-rw-r--r-- 1 root root 289 Apr 25 05:31 vote-deployment.yaml
+-rw-r--r-- 1 root root 192 Apr 25 05:36 vote-service.yaml
+-rw-r--r-- 1 root root 292 Apr 25 05:31 worker-deployment.yaml
+[root@ip-172-31-30-136 k8s-specifications]# kubectl apply -f .
+deployment.apps/db created
+service/db created
+deployment.apps/redis created
+service/redis created
+deployment.apps/result created
+service/result created
+deployment.apps/vote created
+service/vote created
+deployment.apps/worker created
+[root@ip-172-31-30-136 k8s-specifications]# kubectl get all
+NAME                                     READY   STATUS    RESTARTS   AGE
+pod/db-b54cd94f4-27655                   1/1     Running   0          108s
+pod/mavenir1-mysql-c9fd96999-d6svt       0/1     Pending   0          9h
+pod/ramakrushna-mysql-54df5874d5-9rrj2   0/1     Pending   0          9h
+pod/redis-868d64d78-gb7vg                1/1     Running   0          108s
+pod/result-5d57b59f4b-xvjwn              1/1     Running   0          107s
+pod/vote-94849dc97-5xdbl                 1/1     Running   0          107s
+pod/worker-dd46d7584-bg8c8               1/1     Running   0          107s
+
+NAME                        TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+service/db                  ClusterIP   10.98.96.29      <none>        5432/TCP         108s
+service/mavenir1-mysql      ClusterIP   10.104.225.16    <none>        3306/TCP         9h
+service/ramakrushna-mysql   ClusterIP   10.96.237.156    <none>        3306/TCP         9h
+service/redis               ClusterIP   10.100.44.41     <none>        6379/TCP         107s
+service/result              NodePort    10.98.175.78     <none>        5001:31001/TCP   107s
+service/vote                NodePort    10.100.216.200   <none>        5000:31005/TCP   107s
+
+NAME                                READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/db                  1/1     1            1           108s
+deployment.apps/mavenir1-mysql      0/1     1            0           9h
+deployment.apps/ramakrushna-mysql   0/1     1            0           9h
+deployment.apps/redis               1/1     1            1           108s
+deployment.apps/result              1/1     1            1           107s
+deployment.apps/vote                1/1     1            1           107s
+deployment.apps/worker              1/1     1            1           107s
+
+NAME                                           DESIRED   CURRENT   READY   AGE
+replicaset.apps/db-b54cd94f4                   1         1         1       108s
+replicaset.apps/mavenir1-mysql-c9fd96999       1         1         0       9h
+replicaset.apps/ramakrushna-mysql-54df5874d5   1         1         0       9h
+replicaset.apps/redis-868d64d78                1         1         1       108s
+replicaset.apps/result-5d57b59f4b              1         1         1       107s
+replicaset.apps/vote-94849dc97                 1         1         1       107s
+replicaset.apps/worker-dd46d7584               1         1         1       107s
+[root@ip-172-31-30-136 k8s-specifications]# ^C
+[root@ip-172-31-30-136 k8s-specifications]# ^C
+[root@ip-172-31-30-136 k8s-specifications]# kubectl get po
+NAME                                 READY   STATUS    RESTARTS   AGE
+db-b54cd94f4-27655                   1/1     Running   0          6m6s
+mavenir1-mysql-c9fd96999-d6svt       0/1     Pending   0          9h
+ramakrushna-mysql-54df5874d5-9rrj2   0/1     Pending   0          9h
+redis-868d64d78-gb7vg                1/1     Running   0          6m6s
+result-5d57b59f4b-xvjwn              1/1     Running   0          6m5s
+vote-94849dc97-5xdbl                 1/1     Running   0          6m5s
+worker-dd46d7584-bg8c8               1/1     Running   0          6m5s
+[root@ip-172-31-30-136 k8s-specifications]# kubectl delete po vote-94849dc97-5xdbl
+pod "vote-94849dc97-5xdbl" deleted
+^C
+[root@ip-172-31-30-136 k8s-specifications]# kubectl delete po r
+pod "result-5d57b59f4b-xvjwn" deleted
+^C
+[root@ip-172-31-30-136 k8s-specifications]# kubectl delete po db-b54cd94f4-27655
+pod "db-b54cd94f4-27655" deleted
+
+^C
+[root@ip-172-31-30-136 k8s-specifications]# kubectl get po
+NAME                                 READY   STATUS        RESTARTS   AGE
+db-b54cd94f4-27655                   1/1     Terminating   0          7m28s
+db-b54cd94f4-th5zt                   1/1     Running       0          14s
+mavenir1-mysql-c9fd96999-d6svt       0/1     Pending       0          9h
+ramakrushna-mysql-54df5874d5-9rrj2   0/1     Pending       0          9h
+redis-868d64d78-gb7vg                1/1     Running       0          7m28s
+result-5d57b59f4b-w4hvh              1/1     Running       0          26s
+result-5d57b59f4b-xvjwn              1/1     Terminating   0          7m27s
+vote-94849dc97-cxhvl                 1/1     Running       0          47s
+worker-dd46d7584-bg8c8               1/1     Running       0          7m27s
+[root@ip-172-31-30-136 k8s-specifications]# kubectl get po
+NAME                                 READY   STATUS    RESTARTS   AGE
+db-b54cd94f4-th5zt                   1/1     Running   0          82s
+mavenir1-mysql-c9fd96999-d6svt       0/1     Pending   0          9h
+ramakrushna-mysql-54df5874d5-9rrj2   0/1     Pending   0          9h
+redis-868d64d78-gb7vg                1/1     Running   0          8m36s
+result-5d57b59f4b-w4hvh              1/1     Running   0          94s
+vote-94849dc97-cxhvl                 1/1     Running   0          115s
+worker-dd46d7584-bg8c8               1/1     Running   1          8m35s
+[root@ip-172-31-30-136 k8s-specifications]# kubectl delete po db-b54cd94f4-th5zt
+pod "db-b54cd94f4-th5zt" deleted
+[root@ip-172-31-30-136 k8s-specifications]# 
+[root@ip-172-31-30-136 k8s-specifications]# 
+[root@ip-172-31-30-136 k8s-specifications]# 
+[root@ip-172-31-30-136 k8s-specifications]# kubectl delete po result-5d57b59f4b-w4hvh
+pod "result-5d57b59f4b-w4hvh" deleted
+^C
+[root@ip-172-31-30-136 k8s-specifications]# 
+[root@ip-172-31-30-136 k8s-specifications]# 
+[root@ip-172-31-30-136 k8s-specifications]# 
+[root@ip-172-31-30-136 k8s-specifications]# kubectl get po
+NAME                                 READY   STATUS        RESTARTS   AGE
+db-b54cd94f4-qctx7                   1/1     Running       0          5m42s
+mavenir1-mysql-c9fd96999-d6svt       0/1     Pending       0          10h
+ramakrushna-mysql-54df5874d5-9rrj2   0/1     Pending       0          9h
+redis-868d64d78-gb7vg                1/1     Running       0          16m
+result-5d57b59f4b-2ngm7              1/1     Running       0          7s
+result-5d57b59f4b-w4hvh              1/1     Terminating   0          9m8s
+vote-94849dc97-cxhvl                 1/1     Running       0          9m29s
+worker-dd46d7584-bg8c8               1/1     Running       2          16m
+[root@ip-172-31-30-136 k8s-specifications]# kubectl get po
+NAME                                 READY   STATUS        RESTARTS   AGE
+db-b54cd94f4-qctx7                   1/1     Running       0          5m49s
+mavenir1-mysql-c9fd96999-d6svt       0/1     Pending       0          10h
+ramakrushna-mysql-54df5874d5-9rrj2   0/1     Pending       0          9h
+redis-868d64d78-gb7vg                1/1     Running       0          16m
+result-5d57b59f4b-2ngm7              1/1     Running       0          14s
+result-5d57b59f4b-w4hvh              1/1     Terminating   0          9m15s
+vote-94849dc97-cxhvl                 1/1     Running       0          9m36s
+worker-dd46d7584-bg8c8               1/1     Running       2          16m
+[root@ip-172-31-30-136 k8s-specifications]# 
+[END] 4/28/2022 10:32:25 PM
